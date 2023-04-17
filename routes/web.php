@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +16,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
+
+
+Route::controller(ProductController::class)->group(function () {
+
+    Route::get('/', 'index')->name('home');
+    Route::get('/s', 'getCart')->name('cart');
 });
+
+Route::controller(CartController::class)->group(function () {
+
+    Route::post('/',  'store')->name('store');
+    Route::delete('/cart/delete/{id}', 'destroy');
+    Route::put('/cart/add/{id}', 'updated');
+    Route::put('/cart/minus/{id}', 'updated');
+});
+
+Route::post('pay', [PaymentController::class, 'pay'])->name('payment');
+Route::get('success', [PaymentController::class, 'success']);
+Route::get('error', [PaymentController::class, 'error']);
