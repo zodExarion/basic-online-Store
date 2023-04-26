@@ -21,15 +21,15 @@ use Illuminate\Support\Facades\Route;
 Route::controller(ProductController::class)->group(function () {
 
     Route::get('/', 'index')->name('home');
-    Route::get('/s', 'getCart')->name('cart');
 });
 
 Route::controller(CartController::class)->group(function () {
 
     Route::post('/',  'store')->name('store');
     Route::delete('/cart/delete/{id}', 'destroy');
-    Route::put('/cart/add/{id}', 'updated');
-    Route::put('/cart/minus/{id}', 'updated');
+    Route::put('/cart/add/{id}', 'update');
+    Route::put('/cart/minus/{id}', 'update');
+    Route::get('/get', 'show')->name('cart');
 });
 
 Route::post('pay', [PaymentController::class, 'pay'])->name('payment');

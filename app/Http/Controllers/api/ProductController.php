@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
@@ -14,7 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('index', [
+
+        return response()->json([
             'products' => Product::latest()->filter(request(['search']))->paginate(4),
             'carts' => Cart::latest()->get(),
 
