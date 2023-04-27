@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,16 +17,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::controller(UsersController::class)->group(function () {
 
+    Route::get('/', 'index');
+    // Route::post('/login', 'login')->name('login');
+    Route::get('/register', 'view_register');
+    Route::post('/register2', 'register')->name('register');
+});
 
 Route::controller(ProductController::class)->group(function () {
 
-    Route::get('/', 'index')->name('home');
+    Route::get('/home', 'index')->name('home');
 });
 
 Route::controller(CartController::class)->group(function () {
 
-    Route::post('/',  'store')->name('store');
+    Route::post('/home',  'store')->name('store');
     Route::delete('/cart/delete/{id}', 'destroy');
     Route::put('/cart/add/{id}', 'update');
     Route::put('/cart/minus/{id}', 'update');
