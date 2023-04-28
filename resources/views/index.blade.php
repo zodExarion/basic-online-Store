@@ -7,7 +7,7 @@
                     id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                 <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" action="/home">
                     <div class="input-group"><input class="bg-light form-control border-0 small" name="search"
-                            type="text" placeholder="Search by Name, Category"><button class="btn btn-primary py-0"
+                            type="text" placeholder="Search by Name "><button class="btn btn-primary py-0"
                             type="submit"><i class="fas fa-search"></i></button></div>
                 </form>
                 <ul class="navbar-nav flex-nowrap ms-auto">
@@ -95,7 +95,7 @@
                                     src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
                                 <div class="card-body p-4 d-flex flex-column justify-content-between">
                                     <div>
-                                        <p class="text-primary card-text mb-0">{{ $product->price }} pesos</p>
+                                        <p class="text-primary card-text mb-0">₱{{ $product->price }}</p>
                                         <h4 class="card-title">{{ $product->name }}</h4>
                                     </div>
 
@@ -110,7 +110,7 @@
                                                         <span class="btn btn-sm btn-outline-secondary "><b><i
                                                                     class="fa fa-minus"></i></b></span>
                                                     </div>
-
+                                                   
                                                     <input class="qty" type="number" name="quantity" id="" value="1"
                                                         readonly>
 
@@ -122,6 +122,7 @@
                                                 </div>
                                             </div>
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input class="user" type="hidden" name="user_id" id="" value="{{ Auth::user()->id }}">
                                             <button class="btn btn-primary" type="submit">Add to
                                                 cart</button>
                                         </form>
@@ -131,7 +132,10 @@
                         </div>
                     @endforeach
                 @else
-                    <p>No Product found</p>
+                <div class="w-100 d-flex justify-content-center">
+                    <p class="text-center badge bg-danger">No Product found</p>
+                </div>
+                    
                 @endunless
 
             </div>
@@ -343,13 +347,24 @@
                     });
 
                     if (data.carts.length === 0) {
-                        cartsHtml = '<p>Order Now</p>';
+                        cartsHtml = `
+                        <div class="  text-center p-3">
+                            <span class="text-center w-100 ">Order Now!</span>    
+                        </div>
+                        
+                        `;
                     }
                     $('#cartsContainer').html(cartsHtml);
                     var formattedTotalSum = totalSum.toLocaleString('en-US', {
                         style: 'currency',
                         currency: 'PHP'
                     });
+                    if (parseInt(totalSum) <= 0) {
+                        $('#order').attr('disabled', true);
+                    }else{
+                        $('#order').attr('disabled', false);
+                    }
+                    
                     $('#order').text('PLACE ORDER: ' + formattedTotalSum);
                     $('[name="amount"]').val(totalSum);
                 }

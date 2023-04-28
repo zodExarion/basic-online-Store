@@ -5,6 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\ProductController;
 use App\Http\Controllers\api\CartController;
 
+
+use App\Http\Controllers\PaymentController;
+
+use App\Http\Controllers\UsersController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,15 +22,34 @@ use App\Http\Controllers\api\CartController;
 */
 
 
-// Route::controller(ProductController::class)->group(function () {
+// Route::group(['middleware' => 'guest'], function () {
+//     Route::controller(UsersController::class)->group(function () {
 
-//     Route::get('/indexs', 'index')->name('home');
-// });
-// Route::controller(CartController::class)->group(function () {
-//     Route::get('/index', 'show')->name('home');
-//     Route::get('/a', 'show')->name('login');;
+//         Route::get('/', 'index')->name('login');
+//         Route::post('/login', 'login')->name('login2');
+//         Route::get('/register', 'view_register');
+//         Route::post('/register2', 'register')->name('register');
+//     });
 // });
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
+// Route::group(['middleware' => 'auth'], function () {
+
+//     Route::controller(ProductController::class)->group(function () {
+
+//         Route::get('/home', 'index')->name('home');
+//         Route::post('/logout', 'logout')->name('logout');
+//     });
+
+//     Route::controller(CartController::class)->group(function () {
+
+//         Route::post('/store',  'store')->name('store');
+//         Route::delete('/cart/delete/{id}', 'destroy');
+//         Route::put('/cart/add/{id}', 'update');
+//         Route::put('/cart/minus/{id}', 'update');
+//         Route::get('/get', 'show')->name('cart');
+//     });
+
+//     Route::post('pay', [PaymentController::class, 'pay'])->name('payment');
+//     Route::get('success', [PaymentController::class, 'success']);
+//     Route::get('error', [PaymentController::class, 'error']);
 // });

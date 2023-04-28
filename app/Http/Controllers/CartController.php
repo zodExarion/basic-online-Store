@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -22,7 +23,10 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $product_id = $request->input('product_id');
-        $existing_cart = Cart::where('product_id', $product_id)->first();
+        $existing_cart = Cart::where('product_id', $product_id)
+            ->where('user_id', auth()->user()->id)
+            ->first();
+
 
         if ($existing_cart) {
             $existing_cart->quantity += $request->input('quantity');
@@ -33,6 +37,7 @@ class CartController extends Controller
         } else {
             $cart = new Cart;
             $cart->product_id = $product_id;
+            $cart->user_id = Auth::user()->id;
             $cart->quantity = $request->input('quantity');
             $cart->save();
             return response()->json([
@@ -46,13 +51,17 @@ class CartController extends Controller
      */
     public function show()
     {
-        $carts = Cart::latest()->with('product')->get();
+        $carts = Cart::where('user_id', auth()->user()->id)
+            ->latest()
+            ->with('product')
+            ->get();
 
         return response()->json([
             'carts' => $carts,
             'cartCount' => count($carts)
         ]);
     }
+
 
     /**
      * Update the specified resource in storage.
