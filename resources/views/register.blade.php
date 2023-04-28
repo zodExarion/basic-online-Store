@@ -1,4 +1,4 @@
-<x-headerFooter class="bg-gradient-primary d-flex align-items-center">
+<x-headerFooter class="bg-gradient-primary d-flex align-items-center" style="height:100vh;">
 <div class="container">
     <div class="card shadow-lg o-hidden border-0 my-5">
         <div class="card-body p-0">
@@ -15,18 +15,34 @@
                             @csrf
                             <div class="mb-3">
                                 <input id="exampleFirstName" class="form-control form-control-user" type="text" placeholder="Name" name="name" />
-                               
+                                {{-- @error('name')
+                                <span class="text-white bg-danger">{{ $message }}</span>
+                            @enderror --}}
                             </div>
-                            <div class="mb-3"><input id="exampleInputEmail" class="form-control form-control-user" type="email" aria-describedby="emailHelp" placeholder="Email Address" name="email" /></div>
+                            <div class="mb-3">
+                                <input id="exampleInputEmail" class="form-control form-control-user" type="text" aria-describedby="emailHelp" placeholder="Email Address" name="email" />
+                                {{-- @error('email')
+                                <span class="text-white bg-danger">{{ $message }}</span>
+                            @enderror --}}
+                            </div>
                             <div class="row mb-3">
-                                <div class="col-sm-6 mb-3 mb-sm-0"><input id="examplePasswordInput" class="form-control form-control-user" type="password" placeholder="Password" name="password" /></div>
-                                <div class="col-sm-6"><input id="exampleRepeatPasswordInput" class="form-control form-control-user" type="password" placeholder="Repeat Password" name="password_repeat" /></div>
-                            </div><button class="btn btn-primary d-block btn-user w-100" type="submit">Register Account</button>
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input id="examplePasswordInput" class="form-control form-control-user" type="password" placeholder="Password" name="password" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <input id="exampleRepeatPasswordInput" class="form-control form-control-user" type="password" placeholder="Repeat Password" name="password_confirmation" />
+                                </div>
+                                {{-- @error('password')
+                                <span class="text-white bg-danger">{{ $message }}</span>
+                            @enderror --}}
+                            </div>
+                            
+                            <button class="btn btn-primary d-block btn-user w-100" type="submit">Register Account</button>
                             
                             <hr />
                         </form>
-                        <div class="text-center"><a class="small" href="forgot-password.html">Forgot Password?</a></div>
-                        <div class="text-center"><a class="small" href="login.html">Already have an account? Login!</a></div>
+                        <div class="text-center"><a class="small link" href="forgot-password.html">Forgot Password?</a></div>
+                        <div class="text-center"><a class="small link" href="/">Already have an account? Login!</a></div>
                     </div>
                 </div>
             </div>
@@ -49,11 +65,24 @@
                     setTimeout(function () {
                         $('.alert').alert('close');
                     }, 3000);
-
+                    window.location.href = "{{ route('login') }}";
                 },
-                error: function (response) {
-                    console.log(response);
-                }
+                error: function(xhr, status, error) {
+            var response = JSON.parse(xhr.responseText);
+            var errorsHtml = '<ul>';
+            $.each(response.errors, function(index, value) {
+                errorsHtml += '<li>' + value + '</li>';
+            });
+            errorsHtml += '</ul>';
+
+            
+            $('#notification-container').append(
+                        '<div class="alert alert-danger alert-dismissible fade show m-1" role="alert"><strong>'+
+                            response.message +'</strong> ' + errorsHtml + '.</div>');
+                    setTimeout(function () {
+                        $('.alert').alert('close');
+                    }, 3000);
+        }
             });
         });
 </script>

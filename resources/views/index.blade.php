@@ -1,11 +1,11 @@
 <x-layout>
 
-    <div id="notification-container"></div>
+    
     <div id="content">
         <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
             <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3"
                     id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-                <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" action="/">
+                <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" action="/home">
                     <div class="input-group"><input class="bg-light form-control border-0 small" name="search"
                             type="text" placeholder="Search by Name, Category"><button class="btn btn-primary py-0"
                             type="submit"><i class="fas fa-search"></i></button></div>
@@ -15,7 +15,7 @@
                             aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
                         <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in"
                             aria-labelledby="searchDropdown">
-                            <form class="me-auto navbar-search w-100" action="/">
+                            <form class="me-auto navbar-search w-100" action="/home">
                                 <div class="input-group"><input name="search"
                                         class="bg-light form-control border-0 small" type="text"
                                         placeholder="Search for ...">
@@ -56,7 +56,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
                                 aria-expanded="false" data-bs-toggle="dropdown" href="#"><span
-                                    class="d-none d-lg-inline me-2 text-gray-600 small">John Doe</span><img
+                                    class="d-none d-lg-inline me-2 text-gray-600 small">{{ ucwords(Auth::user()->name) }}</span><img
                                     class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
                             <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
                                     class="dropdown-item" href="#"><i
@@ -66,8 +66,12 @@
                                     class="dropdown-item" href="#"><i
                                         class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
                                     log</a>
-                                <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i
-                                        class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                <div class="dropdown-divider"></div>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                <button type="submit" class="dropdown-item" ><i
+                                        class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</button>
+                                </form>
                             </div>
                         </div>
                     </li>

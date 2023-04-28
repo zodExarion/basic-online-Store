@@ -17,15 +17,15 @@ use App\Http\Controllers\api\CartController;
 */
 
 
-Route::controller(ProductController::class)->group(function () {
+// Route::controller(ProductController::class)->group(function () {
 
-    Route::get('/indexs', 'index')->name('home');
-});
-Route::controller(CartController::class)->group(function () {
-    Route::get('/index', 'show')->name('home');
-    Route::get('/a', 'show')->name('login');;
-});
+//     Route::get('/indexs', 'index')->name('home');
+// });
+// Route::controller(CartController::class)->group(function () {
+//     Route::get('/index', 'show')->name('home');
+//     Route::get('/a', 'show')->name('login');;
+// });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });

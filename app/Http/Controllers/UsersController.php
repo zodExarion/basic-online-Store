@@ -32,27 +32,29 @@ class UsersController extends Controller
     {
 
         if (Auth::attempt($request->only('email', 'password'))) {
-            return response()->json([
-                'message' => 'yes'
-            ]);
+            return response()->json(['message' => 'Login successful.']);
         } else {
-            return response()->json([
-                'message' => 'no'
-            ]);
+            return response()->json(['message' => 'Invalid login credentials.'], 401);
         }
     }
+
     public function register(Request $request)
     {
-
-
-        $login = new User;
-        $login->name = $request->name;
-        $login->email = $request->email;
-        $login->password = Hash::make($request->password);
-        $login->save();
-        return response()->json([
-            'message' => 'Reqgistered'
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
         ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        Auth::login($user);
+
+        return response()->json(['message' => 'Registration successful.']);
     }
 
     /**

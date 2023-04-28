@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use App\Models\Cart;
 
 class ProductController extends Controller
 {
@@ -20,7 +21,11 @@ class ProductController extends Controller
 
         ]);
     }
-
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
+    }
     // public function getCart()
     // {
 
